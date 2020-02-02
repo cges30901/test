@@ -8,7 +8,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.view = QWebEngineView(self)
-        self.view.load(QUrl("https://cges30901.github.io/test/vert"))
+        self.view.load(QUrl("https://cges30901.github.io/test/vert2"))
         self.setCentralWidget(self.view)
 
 
