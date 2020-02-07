@@ -11,5 +11,8 @@ class MainWindow : public QMainWindow
 
 public:
     MainWindow(QWidget *parent = nullptr);
+
+protected:
+    bool eventFilter(QObject *obj, QEvent *ev);
 };
 #endif // MAINWINDOW_H
