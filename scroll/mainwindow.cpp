@@ -8,18 +8,10 @@ MainWindow::MainWindow(QWidget *parent)
     view->resize(1000, 600);
     view->load(QUrl("https://cges30901.github.io/test/vert2"));
     setCentralWidget(view);
-    view->focusProxy()->installEventFilter(this);
+    connect(view,&QWebEngineView::loadFinished,this,&MainWindow::scroll);
 }
 
-bool MainWindow::eventFilter(QObject *obj, QEvent *event)
+void MainWindow::scroll()
 {
-    if (obj == view->focusProxy() && event->type() == QEvent::Wheel) {
-        QWheelEvent *wheel=static_cast<QWheelEvent *>(event);
-        qDebug()<<wheel->angleDelta();
-        return true;
-    }
-    else {
-        // pass the event on to the parent class
-        return QMainWindow::eventFilter(obj, event);
-    }
+    view->page()->runJavaScript(QString("window.scrollTo(-5000, 0);"));
 }

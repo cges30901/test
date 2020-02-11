@@ -12,7 +12,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
 
-protected:
-    bool eventFilter(QObject *obj, QEvent *ev);
+public slots:
+    void scroll();
 };
 #endif // MAINWINDOW_H
