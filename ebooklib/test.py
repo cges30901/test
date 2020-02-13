@@ -15,17 +15,30 @@ def get_item_from_tuple(tup, level):
             toc.append([a.title, os.path.join(reader.opf_dir, item.file_name), level])
     return toc
 
-reader = epub.EpubReader('ncx.epub')
+reader = epub.EpubReader('toc.epub')
 book = reader.load()
 reader.process()
 
-toc=[]
+'''toc=[]
 for a in book.toc:
     if isinstance(a, tuple):
         toc.extend(get_item_from_tuple(a, 0))
     else:
         item = book.get_item_with_href(a.href.split('#')[0])
         toc.append([a.title, os.path.join(reader.opf_dir, item.file_name), 0])
+'''
+all_items = book.get_items()
 
-for a in toc:
-    print(a[0], a[2])
+for a in all_items:
+    if isinstance(a, epub.EpubNav):
+        print(a.file_name, os.path.dirname(a.file_name))
+        nav_dir = os.path.dirname(a.file_name)
+
+all_items = book.get_items()
+for a in all_items:
+    if a.get_type() == 4:
+        print(a.file_name, os.path.dirname(a.file_name))
+        ncx_dir = os.path.dirname(a.file_name)
+
+for a in book.toc:
+    print(os.path.normpath(os.path.join(ncx_dir, a.href)))
