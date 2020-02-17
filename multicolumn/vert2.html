@@ -6,8 +6,18 @@
 <meta charset="utf-8"/>
 <title>test</title>
 <style>
-body {writing-mode: vertical-rl;column-count: 70; height: 7000%;}
+body {writing-mode: vertical-rl;}
 </style>
+<script>
+window.onload = function() {
+    var column = Math.floor(document.body.scrollWidth / document.documentElement.clientWidth);
+    while(document.body.scrollWidth > document.documentElement.clientWidth){
+        document.body.style.columnCount=column;
+        document.body.style.height=column+"00vh";
+        column++;
+    }
+}
+</script>
 </head>
 <body>
 <p>The Project Gutenberg EBook of Lun Yu, by Fu Zi Kong</p>
