@@ -13,7 +13,9 @@ int main(int argc, char *argv[])
     //view.load(QUrl::fromLocalFile(a.applicationDirPath()+"/test.html"));
 
     //open local file with id is not working
-    view.load(QUrl::fromLocalFile(a.applicationDirPath()+"/test.html#p3"));
+    QUrl url = QUrl::fromLocalFile(a.applicationDirPath()+"/test.html");
+    url.setFragment("p10");
+    view.load(url);
 
     view.show();
     return a.exec();
