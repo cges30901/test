@@ -8,37 +8,32 @@ class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.view = QWebEngineView(self)
-        self.view.load(QUrl.fromLocalFile("/home/manjaro/project/epub/ol.epub_FILES/OEBPS/Text/text02.xhtml"))
+        self.view.load(QUrl("https://cges30901.github.io/test/vert2"))
         self.setCentralWidget(self.view)
         self.view.loadFinished.connect(self.paginate)
         self.view.focusProxy().installEventFilter(self)
-        self.pos = 0
+        self.pageIndex = 0
 
     def eventFilter(self, source, e):
         if source == self.view.focusProxy():
             #pos_js = self.view.page().scrollPosition().x() - self.view.page().contentsSize().width() + self.view.width()
             if e.type() == QEvent.Wheel:
-                col=self.view.page().contentsSize().height()//self.view.height()
-                height=self.view.page().contentsSize().height()/col
-                #print(height)
+                self.pageCount=round(self.view.page().contentsSize().height()/self.view.height())
+                pageHeight=self.view.page().contentsSize().height()/self.pageCount
                 if e.angleDelta().y() > 0:
-                    self.pos -= height
-                    if self.pos<0:
-                        self.pos=0
-                    self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                        .format(self.view.page().scrollPosition().x() , self.pos))
-                else:
-                    self.pos += height
-                    if self.pos>self.view.page().contentsSize().height()-self.view.height():
-                        self.pos=self.view.page().contentsSize().height()-self.view.height()
-                    self.view.page().runJavaScript("window.scrollTo({0}, {1});"
-                        .format(self.view.page().scrollPosition().x() , self.pos))
-                print(self.pos, self.view.page().scrollPosition().y(), self.view.page().contentsSize().height())
+                    if self.pageIndex > 0:
+                        self.pageIndex -= 1
+                elif e.angleDelta().y() < 0:
+                    if self.pageIndex < self.pageCount - 1:
+                        self.pageIndex += 1
+                self.view.page().runJavaScript("window.scrollTo({0}, {1});"
+                    .format(self.view.page().scrollPosition().x() , pageHeight * self.pageIndex))
+                print(self.pageIndex,self.pageCount, self.view.page().scrollPosition().y(), self.view.page().contentsSize().height())
                 return True
             else:
                 return False
         return False
-                
+
 
     @pyqtSlot(bool)
     def paginate(self):
@@ -48,7 +43,8 @@ class MainWindow(QMainWindow):
                 document.body.style.columnCount=column;
                 document.body.style.height=column+"00vh";
                 column++;
-            }''')
+            }
+            document.body.style.overflow='hidden';''')
 
 
 if __name__ == "__main__":
