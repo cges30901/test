@@ -11,12 +11,15 @@ body {
 }
 img {
     max-height:100%;
-    max-width:100%;
+    margin: 20px;
+    padding: 20px;
+    border-style: dotted;
+    border-color: red;
+    border-width:medium;
     box-sizing: border-box;
 }
 div {
-    max-width:100wh;
-    box-sizing: border-box;
+
 }
 </style>
 <script>
@@ -31,14 +34,17 @@ div {
     console.log(document.body)
 }*/
 window.onload = function() {
-    document.body.style.columnCount=10;
-    document.body.style.height="1000vh";
+    document.body.style.columnCount=15;
+    document.body.style.height="1500vh";
     var el = document.querySelectorAll('img');
-
+console.log(el[1].style.borderWidth)
     for(var i=0;i<el.length;i++){
         el[i].style.maxWidth=document.documentElement.clientWidth+"px";
-        
+        el[i].style.margin=0;
+        //el[i].style.padding=0;
+
     }
+
     console.log(document.body.scrollWidth)
         console.log(document.documentElement.clientWidth)
 }
