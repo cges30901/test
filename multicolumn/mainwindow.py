@@ -8,7 +8,7 @@ class MainWindow(QMainWindow):
     def __init__(self):
         QMainWindow.__init__(self)
         self.view = QWebEngineView(self)
-        self.view.load(QUrl("https://cges30901.github.io/test/vert2"))
+        self.view.load(QUrl("https://cges30901.github.io/test/multicolumn/img"))
         self.setCentralWidget(self.view)
         self.view.loadFinished.connect(self.paginate)
         self.view.focusProxy().installEventFilter(self)
@@ -28,7 +28,7 @@ class MainWindow(QMainWindow):
                         self.pageIndex += 1
                 self.view.page().runJavaScript("window.scrollTo({0}, {1});"
                     .format(self.view.page().scrollPosition().x() , pageHeight * self.pageIndex))
-                print(self.pageIndex,self.pageCount, self.view.page().scrollPosition().y(), self.view.page().contentsSize().height())
+                print(self.pageIndex,self.view.height(), self.view.page().scrollPosition().y(), self.view.page().contentsSize().height())
                 return True
             else:
                 return False
@@ -38,13 +38,29 @@ class MainWindow(QMainWindow):
     @pyqtSlot(bool)
     def paginate(self):
         self.view.page().runJavaScript('''
-            var column = Math.floor(document.body.scrollWidth / document.documentElement.clientWidth);
-            while(document.body.scrollWidth > document.documentElement.clientWidth){
-                document.body.style.columnCount=column;
-                document.body.style.height=column+"00vh";
-                column++;
-            }
-            document.body.style.overflow='hidden';''')
+var el = document.querySelectorAll('img');
+for(var i = 0; i < el.length; i++){
+    //wrap image in div so two consecutive images can be separated
+    var wrapper = document.createElement('div');
+    el[i].parentNode.insertBefore(wrapper, el[i]);
+    wrapper.appendChild(el[i]);
+
+    //prevent pagination failure when wide images exist
+    el[i].style.maxHeight = "100%";
+    el[i].style.maxWidth = document.documentElement.clientWidth + "px";
+    el[i].style.margin = 0;
+}
+var columnInit = Math.floor(document.body.scrollWidth / document.documentElement.clientWidth);
+for(var column = columnInit; column < columnInit * 2; column++){
+    document.body.style.columnCount = column;
+    document.body.style.height = column + "00vh";
+    if(document.body.scrollWidth <= document.documentElement.clientWidth){
+        break;
+    }
+}
+//hide scroll bar
+document.body.style.overflow='hidden';
+''')
 
 
 if __name__ == "__main__":
