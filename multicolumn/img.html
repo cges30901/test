@@ -8,15 +8,19 @@
 <style>
 body {
     writing-mode: vertical-rl;
-    column-count:10;
-    height:1000vh;
 }
 img {
-    height:100%;
+    max-height:100%;
+    max-width:100%;
+    box-sizing: border-box;
+}
+div {
+    max-width:100wh;
+    box-sizing: border-box;
 }
 </style>
 <script>
-window.onload = function() {
+/*window.onload = function() {
     var el = document.querySelectorAll('img');
     for(var i=0;i<el.length;i++){
         var wrapper = document.createElement('div');
@@ -25,6 +29,18 @@ window.onload = function() {
 
     }
     console.log(document.body)
+}*/
+window.onload = function() {
+    document.body.style.columnCount=10;
+    document.body.style.height="1000vh";
+    var el = document.querySelectorAll('img');
+
+    for(var i=0;i<el.length;i++){
+        el[i].style.maxWidth=document.documentElement.clientWidth+"px";
+        
+    }
+    console.log(document.body.scrollWidth)
+        console.log(document.documentElement.clientWidth)
 }
 
 </script>
@@ -57,9 +73,10 @@ window.onload = function() {
 <p>paragraph</p>
 <p>paragraph</p>
 <p>paragraph</p>
-<img src="img1.png">
-<img src="img2.png">
 
+<div><img src="img1.png"></div>
+<div><img src="img2.png"></div>
+<div><img src="img3.png"></div>
 <p>Second paragraph</p>
 <p>paragraph</p>
 <p>paragraph</p>
