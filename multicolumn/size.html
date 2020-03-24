@@ -5,13 +5,23 @@
 <script>
 window.onload = function() {
 var el = document.getElementById('test');
+var div = document.getElementById('divtest');
+el.style.maxWidth = "100%";
+el.style.maxHeight = window.innerHeight - 16 + "px";
+//el.style.display = "block";
+el.style.verticalAlign = "middle";
 console.log(el.scrollHeight,el.offsetHeight,el.clientHeight)
+console.log(div.scrollHeight,div.offsetHeight,div.clientHeight)
 console.log(document.body.scrollHeight,document.body.offsetHeight,document.body.clientHeight)
+console.log(document.documentElement.scrollHeight,document.documentElement.offsetHeight,document.documentElement.clientHeight)
+console.log(window.innerHeight)
 }
 </script>
 </head>
 
 <body>
+<div id="divtest">
 <img id="test" src="img2.png"/>
+</div>
 </body>
 </html>
